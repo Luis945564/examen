@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulario de selección de números al Azar</title>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <div class="row justify-content-center">
+    <div class="col-md-6">
+        <form id="numeroForm">
+            <div class="form-row">
+            <div class="form-group col-md-6">
+                    <label for="numero1">Número 1:</label>
+                    <input type="number" class="form-control" id="numero1" name="numero1" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                    <label for="numero2">Número 2:</label>
+                    <input type="number" class="form-control" id="numero2" name="numero2" required>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="seleccionarNumero()">Seleccionar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h4>Números Generados</h4>
+            <ul id="numerosLista" class="list-group"></ul>
+        </div>
+        <div class="col-md-6">
+            <h4>Cantidad de Números</h4>
+            <p id="cantidadNumeros">0</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    var numeros = [];
+
+    function seleccionarNumero() {
+        var numero1 = parseFloat(document.getElementById("numero1").value);
+        var numero2 = parseFloat(document.getElementById("numero2").value);
+        
+        var numeroElegido;
+        if (isNaN(numero1) || isNaN(numero2)) {
+            alert("Por favor ingresa dos números válidos.");
+            return;
+        } else {
+            // Elige uno de los dos números al azar
+            numeroElegido = Math.random() < 0.5 ? numero1 : numero2;
+        }
+
+        // Agrega el número a la lista
+        numeros.push(numeroElegido);
+
+        // Actualiza la cantidad de números
+        var cantidadNumeros = document.getElementById("cantidadNumeros");
+        cantidadNumeros.textContent = numeros.length;
+
+        // Limpia la lista antes de actualizarla
+        var numerosLista = document.getElementById("numerosLista");
+        numerosLista.innerHTML = "";
+
+        // Muestra los números en la lista
+        numeros.forEach(function(numero, index) {
+            var listItem = document.createElement("li");
+            listItem.className = "list-group-item";
+            listItem.textContent = "Número #" + (index + 1) + ": " + numero;
+            
+            // Crea el botón de borrar
+            var deleteButton = document.createElement("button");
+            deleteButton.className = "btn btn-danger btn-sm float-right";
+            deleteButton.textContent = "Borrar";
+            deleteButton.onclick = function() {
+                borrarNumero(index);
+            };
+
+            // Agrega el botón de borrar al elemento de la lista
+            listItem.appendChild(deleteButton);
+
+            // Agrega los elementos de la lista a la misma lista
+            numerosLista.appendChild(listItem);
+        });
+    }
+
+    function borrarNumero(index) {
+        // Elimina el número que esta en el array
+        numeros.splice(index, 1);
+
+        // Vuelve a mostrar en la lista
+        seleccionarNumero();
+    }
+</script>
+
+</body>
+</html>
+
+
+
+
+
